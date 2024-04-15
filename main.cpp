@@ -78,6 +78,77 @@ void showPerson(const AddressList *address_list) {
     }
 }
 
+
+//判断联系人是否存在
+int is_exist(const AddressList *address_list, const string &name) {
+    for (int i = 0; i < address_list->size; i++) {
+        Person person = address_list->personArray[i];
+        if (person.name == name) {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+//删除指定的联系人
+void deletePerson(AddressList *address_list) {
+    cout << "请输入你要删除的联系人" << endl;
+    string name;
+    cin >> name;
+    int index = is_exist(address_list, name);
+    if (index == -1) {
+        cout << "查无此人" << endl;
+    } else {
+        for (int i = index; i < address_list->size - 1; i++) {
+            address_list->personArray[i] = address_list->personArray[i + 1];
+        }
+        address_list->size--;
+        cout << "删除成功" << endl;
+    }
+}
+
+//查找联系人
+void findPerson(const AddressList *address_list) {
+    cout << "请输入你要查找的联系人" << endl;
+    string name;
+    cin >> name;
+    int index = is_exist(address_list, name);
+    if (index == -1) {
+        cout << "查无此人" << endl;
+    } else {
+        Person person = address_list->personArray[index];
+        cout << "姓名：" << person.name << "\t";
+        cout << "性别：" << person.sex << "\t";
+        cout << "年龄：" << person.age << "\t";
+        cout << "电话：" << person.phoneNumber << "\t";
+        cout << "地址：" << person.address << endl;
+        cout << "查找成功！" << endl;
+    }
+}
+
+//修改联系人
+void modifyPerson(const AddressList *address_list) {
+    cout << "请输入你要修改的联系人" << endl;
+    string name;
+    cin >> name;
+    int index = is_exist(address_list, name);
+    if (index == -1) {
+        cout << "查无此人" << endl;
+    } else {
+        cout << "不支持修改" << endl;
+    }
+}
+
+void clearAdddressList(AddressList *address_list) {
+    if (address_list->size == 0) {
+        cout << "通讯录为空" << endl;
+    } else {
+        address_list->size = 0;
+        cout << "已清空" << endl;
+    }
+}
+
 // 显示菜单页面
 void showMenu() {
     cout << "*************************" << endl;
@@ -93,12 +164,12 @@ void showMenu() {
 
 int main() {
     AddressList address_list;
-
+    showMenu();
 
     int select;
     while (true) {
         //显示菜单
-        showMenu();
+
 
         cin >> select;
 
@@ -110,15 +181,19 @@ int main() {
                 showPerson(&address_list);
                 break;;
             case 3: //3、删除联系人
+                deletePerson(&address_list);
                 break;
             case 4: //4、查找联系人
+                findPerson(&address_list);
                 break;
             case 5: //5、修改联系人
+                modifyPerson(&address_list);
                 break;
             case 6: //6、清空联系人
+                clearAdddressList(&address_list);
                 break;
             case 0: //0、退出通讯录
-                cout << "Thankyou" << endl;
+                cout << "Thankyou！！！" << endl;
                 return 0;
             default:
                 break;
